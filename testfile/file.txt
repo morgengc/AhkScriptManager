@@ -1,0 +1,9 @@
+hiddenhausen,99.60,y
+herbstein,99.021,n
+bangalore,98.82,y
+golm,98.8,y
+para,98.82,n
+bogen,98.61,n
+saintandre,98.5,n
+delhi,98.61,y
+hyderabad,99.02,y

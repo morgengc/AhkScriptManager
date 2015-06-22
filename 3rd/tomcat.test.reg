@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell]
+
+[HKEY_CLASSES_ROOT\*\shell\Tomcat Test]
+
+[HKEY_CLASSES_ROOT\*\shell\Tomcat Test\command]
+@="\"F:\\编程与优化\\AutoHotKey\\AHK Script Manager\\ext\\TomcatUrl.exe\" %1"
+

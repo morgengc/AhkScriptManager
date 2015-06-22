@@ -1,0 +1,24 @@
+为了使代码在不同编辑器中缩进效果一致，必须将TabStop设置为4个字节宽度，否则代码显示出来可能很凌乱. 以下是常见的编辑器的设置方法. 
+
+Vim
+set tabstop=4
+set cindent shiftwidth=4
+set autoindent shiftwidth=4
+等宽字体 Yahei Mono 12
+
+Visual Studio 2005
+工具->选项->文本编辑器->所有语言->制表符，制表符大小4，缩进大小4
+等宽字体 新宋体 9
+
+Source Insight
+Options->Document Options->Editing Options框中，选中Expand Tabs，设置Tab Width为4
+如果仍然不齐，说明是字体问题，Source Insight默认用VERDANA字体，是非等宽的。用Courier New代替。
+等宽字体 Courier New 9
+
+EditPlus
+Document->Permanent Settings选中Default，点击Tab/Indent，设置Tab为4，设置Indent为4
+等宽字体 新宋体 11
+
+UltraEdit
+高级->配置->编辑，设置制表符为4，缩进空格为4
+等宽字体 新宋体 10
