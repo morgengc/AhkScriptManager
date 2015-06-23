@@ -42,31 +42,31 @@ ahk脚本编码:	UTF-8+BOM
 
 文件说明:
 
-3rd                      项目使用的其他类型脚本和应用程序
+3rd:                      项目使用的其他类型脚本和应用程序
 
-config                   "TODO LIST"脚本使用的配置文件目录
+config:                   "TODO LIST"脚本使用的配置文件目录
 
-ext                      保存外部调用脚本
+ext:                      保存外部调用脚本
 
-image                    程序界面截图
+image:                    程序界面截图
 
-lib                      项目使用的第三方AHK脚本库
+lib:                      项目使用的第三方AHK脚本库
 
-resources                程序图标
+resources:                程序图标
 
-scripts                  脚本目录
+scripts:                  脚本目录
 
-setup                    AHK安装包及帮助文件
+setup:                    AHK安装包及帮助文件
 
-AHK Script Manager.ahk   主程序源码
+AHK Script Manager.ahk:   主程序源码
 
-AHK Script Manager.exe   主程序可执行程序
+AHK Script Manager.exe:   主程序可执行程序
 
-HotKeys.txt              项目定义的热键
+HotKeys.txt:              项目定义的热键
 
-readme.md                本文件
+readme.md:                本文件
 
-TabStop Settings         各种常见文本编辑器按此设置，以便代码缩进风格统一
+TabStop Settings:         各种常见文本编辑器按此设置，以便代码缩进风格统一
 
 --------------
 
