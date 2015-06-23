@@ -72,10 +72,5 @@ TabStop Settings:         各种常见文本编辑器按此设置，以便代码
 
 项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/
 
-脚本描述Wiki: https://code.google.com/p/autohotkey-script-manager/wiki/ScriptDesc
-
-源码下载: svn checkout https://autohotkey-script-manager.googlecode.com/svn/trunk
-
 在Autohotkey中文论坛上单独成贴，地址为: http://ahk8.com/thread-5250.html
-
 
