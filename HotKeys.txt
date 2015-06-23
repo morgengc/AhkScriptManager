@@ -25,3 +25,12 @@ TODO LIST.ahk
 
 锁屏.ahk
 	Win + L					锁屏并关闭屏幕
+
+我的电脑.ahk
+	Win + E					打开我的电脑
+
+虚拟桌面.ahk
+	Alt + 1					切换到桌面1
+	Alt + 2					切换到桌面2
+	Ctrl + 1				发送到桌面1
+	Ctrl + 2				发送到桌面2
