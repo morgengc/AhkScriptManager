@@ -6,13 +6,19 @@
 #NoTrayIcon
 #NoEnv
 
+; Adjust X & Y to suit your screen res
+StartX := A_ScreenWidth - 380
+StartY := 1
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 Gui, -Caption +Border +AlwaysOnTop +ToolWindow
 Gui, Color, EEAA99
 Gui, +LastFound
 WinSet, TransColor, EEAA99
 Gui, Add, Progress,      w100 h10 cGreen -0x1 vDn
 Gui, Add, Progress, x+10 w100 h10 cRed   -0x1 vUp
-Gui, Show, x1060 y1 , NetMeter                  ; Adjust X & Y to suit your screen res
+Gui, Show, x%StartX% y%StartY% , NetMeter
 
 If GetIfTable(tb)
    ExitApp
