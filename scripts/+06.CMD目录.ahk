@@ -21,4 +21,11 @@ Run, cmd.exe
 SendInput %OutDrive%{Enter}
 SendInput {Raw}cd %TargetDir%
 SendInput {Enter}
-SendInput clear{Enter}
+SendInput clear{Enter}	; clear.cmd内容如下, 需要将clear.cmd放入PATH中. cls也可以直接用，但顶端一行空行无法清除
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                  clear.cmd                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; @echo off
+; cls %*
+
