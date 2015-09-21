@@ -39,8 +39,10 @@ WinGetClass, CabinetWClass
 PostMessage, 0x111, 28931,,, A
 PostMessage, 0x111, 28931,,, ahk_class Progman
 
-; 上述语句在win7中还不能自动刷新，必须调用一下F5
+; 上述语句在win7中还不能自动刷新，必须模拟一下菜单动作
 if A_OSVersion in WIN_7, WIN_8
 {
-	ControlSend,, {F5}, ahk_class Progman
+	MouseClick, Right
+	Sleep, 1
+	Send, {Ctrl Down}e{Ctrl Up}
 }
