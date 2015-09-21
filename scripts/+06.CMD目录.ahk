@@ -13,7 +13,20 @@ TargetDir := ClipBoard
 
 ; 如果"我的电脑"窗口位于最前面，则在CMD中进入"我的电脑"那个路径
 IfWinActive, ahk_class CabinetWClass
-	ControlGetText, TargetDir, Edit1, A		; GuiControlGet始终不行
+{
+	if (A_OSVersion == "WIN_XP")
+	{
+		ControlGetText, TargetDir, Edit1, A		; GuiControlGet始终不行
+	}
+	else if (A_OSVersion == "WIN_7")
+	{
+		; 因为Win7地址栏默认没有展开，所以Edit1的值默认是空的，取ToolbarWindow322代替
+		ControlGetText, DirDesc, ToolbarWindow322, A
+		pos := RegExMatch(DirDesc, "[^:]*: (.*)", Result)
+		if (ErrorLevel = 0 && pos > 0)
+			TargetDir := Result1
+	}
+}
 
 SplitPath, TargetDir,,,,, OutDrive
 
