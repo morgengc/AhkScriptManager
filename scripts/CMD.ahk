@@ -17,7 +17,7 @@
 ; Ctrl + L, 仿Linux Term下Ctrl+L的清屏行为
 #IfWinActive ahk_class ConsoleWindowClass
 ^l::
-	SendInput {Raw}clear
+	SendInput {Raw}clear	; clear.cmd内容如下, 需要将clear.cmd放入PATH中. cls也可以直接用，但顶端一行空行无法清除
 	Send {Enter}
 Return 
 
@@ -32,3 +32,8 @@ Return
 	Send %Clipboard%
 Return 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                  clear.cmd                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; @echo off
+; cls %*
