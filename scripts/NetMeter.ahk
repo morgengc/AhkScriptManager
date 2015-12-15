@@ -18,45 +18,41 @@ Gui, +LastFound
 WinSet, TransColor, EEAA99
 Gui, Add, Progress,      w100 h10 cGreen -0x1 vDn
 Gui, Add, Progress, x+10 w100 h10 cRed   -0x1 vUp
-Gui, Show, x%StartX% y%StartY% , NetMeter
+Gui, Show, x%StartX% y%StartY%, NetMeter
 
 If GetIfTable(tb)
-   ExitApp
-
-Loop, % DecodeInteger(&tb)
-{
-	If DecodeInteger(&tb + 4 + 860 * (A_Index - 1) + 544) < 4 || DecodeInteger(&tb + 4 + 860 * (A_Index - 1) + 516) = 24
-	   Continue
-	ptr := &tb + 4 + 860 * (A_Index - 1)
-	   Break
-}
-
-If !ptr
-   ExitApp
+	ExitApp
 
 SetTimer, NetMeter, On, 1000
 Return
 
 NetMeter:
-	DllCall("iphlpapi\GetIfEntry", "Uint", ptr)
-	
-	dnNew := DecodeInteger(ptr + 552)		; Total Incoming Bytes
-	upNew := DecodeInteger(ptr + 576)		; Total Outgoing Bytes
-	
+	dnNew := 0
+	upNew := 0
+
+	GetIfTable(tb)
+
+	Loop, % DecodeInteger(&tb)
+	{
+		/*  Include this codes to exclude the loopback interface.
+			If DecodeInteger(&tb + 4 + 860 * (A_Index - 1) + 516) = 24
+			Continue
+		 */
+		dnNew += DecodeInteger(&tb + 4 + 860 * (A_Index - 1) + 552)		; Total Incoming Octets
+		upNew += DecodeInteger(&tb + 4 + 860 * (A_Index - 1) + 576)		; Total Outgoing Octets
+	}
+
 	dnRate := Round((dnNew - dnOld) / 1024)
 	upRate := Round((upNew - upOld) / 1024)
-	
+
 	GuiControl,, Dn, %dnRate%
-	;FileAppend, %dnRate%, xxx.txt
-	;FileAppend, `n, xxx.txt
 	GuiControl,, Up, %upRate%
-	
+
 	dnOld := dnNew
 	upOld := upNew
 Return
 
-
-GetIfTable(ByRef tb, bOrder = False)
+GetIfTable(ByRef tb, bOrder = True)
 {
 	nSize := 4 + 860 * GetNumberOfInterfaces() + 8
 	VarSetCapacity(tb, nSize)
