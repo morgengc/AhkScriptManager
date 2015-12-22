@@ -11,6 +11,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 #Include ../lib/Gdip.ahk
+#Include ../lib/DpiScale.ahk
 
 #SingleInstance, Force
 #NoTrayIcon
@@ -68,6 +69,8 @@ MouseCapture(BUTTON)
 			MouseGetPos, MXend, MYend
 			W := abs(MX - MXend)
 			H := abs(MY - MYend)
+			DispW := W / GetDpiScale()
+			DispH := H / GetDpiScale()
 			if (MX < MXend)
 				X := MX
 			else
@@ -77,7 +80,7 @@ MouseCapture(BUTTON)
 			else
 				Y := MYend
 
-			Gui, 1:Show, x%X% y%Y% w%W% h%H%
+			Gui, 1:Show, x%X% y%Y% w%DispW% h%DispH%
 		}
 		else
 			Break

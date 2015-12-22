@@ -24,18 +24,20 @@
 #NoTrayIcon
 #NoEnv
 
+#Include ../lib/DpiScale.ahk
+
 SavePath = %A_ScriptDir%\..\config\TODO.config
 
-WINDOW_X := A_ScreenWidth - 400	; 窗口起始X
-WINDOW_Y := 250					; 窗口起始Y
-WINDOW_W := 250					; 窗口宽度
-WINDOW_H := 300 				; 窗口高度
-EDIT_H := 20					; Edit控件高度
-EDIT_SPACE := 1					; Edit控件垂直间距
-TEXT_W := 18					; Text控件宽度
-BUTTON_H := 20					; Button控件高度
-BUTTON_SPACE := 7				; Button控件与Edit控件的垂直间距
-BGCOLOR = 00FF00				; 背景颜色RGB
+WINDOW_X := A_ScreenWidth - (380*GetDpiScale())	; 窗口起始X
+WINDOW_Y := 250	* GetDpiScale()					; 窗口起始Y
+WINDOW_W := 250									; 窗口宽度
+WINDOW_H := 300 								; 窗口高度
+EDIT_H := 20									; Edit控件高度
+EDIT_SPACE := 1									; Edit控件垂直间距
+TEXT_W := 18									; Text控件宽度
+BUTTON_H := 20									; Button控件高度
+BUTTON_SPACE := 7								; Button控件与Edit控件的垂直间距
+BGCOLOR = 00FF00								; 背景颜色RGB
 
 FieldCount := Round((WINDOW_H-BUTTON_H-BUTTON_SPACE) / (EDIT_H+EDIT_SPACE))	; TODOLIST最大条目为FieldCount条
 

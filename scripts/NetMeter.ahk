@@ -6,8 +6,10 @@
 #NoTrayIcon
 #NoEnv
 
+#Include ../lib/DpiScale.ahk
+
 ; Adjust X & Y to suit your screen res
-StartX := A_ScreenWidth - 380
+StartX := A_ScreenWidth - (360*GetDpiScale())
 StartY := 1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
