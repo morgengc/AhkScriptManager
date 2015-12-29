@@ -36,7 +36,7 @@ SEDOUTFILE := A_WorkingDir . "\sedtmp.txt"      ; SED处理后的文件，ANSI�
 
 Gui, Add, Button, x6 y7 w80 h20 gSetAnsi, 修正乱码
 Gui, Add, Button, x506 y7 w60 h20 gAlignColumn, 对齐
-Gui, Add, Edit, x6 y37 w560 h330 vMyEdit, Drag plain TXT file into this control
+Gui, Add, Edit, x6 y37 w560 h330 vMyEdit, 直接拖动TXT文件到该界面上
 Gui, Add, StatusBar,, ANSI
 Gui, Show,, 文本竖列对齐
 Return

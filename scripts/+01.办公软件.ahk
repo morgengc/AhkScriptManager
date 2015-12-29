@@ -39,7 +39,7 @@ for Seconds, Target in ExeList
 	SplitPath, Target, ProcName
 
 	CoordMode, ToolTip, Screen  ; 把ToolTips放置在相对于屏幕坐标的位置
-	ToolTip, Launching %ProcName%, 640, 400
+	ToolTip, Launching %ProcName%, (A_ScreenWidth/2-100), A_ScreenHeight/2
 	Sleep, 1000
 
 	; 若进程未启动则启动，若已启动则不作任何改动
