@@ -5,5 +5,5 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\*\shell\ScreenshotView]
 
 [HKEY_CLASSES_ROOT\*\shell\ScreenshotView\command]
-@="\"F:\\编程与优化\\AutoHotKey\\AHK-Script-Manager\\ext\\ScreenshotView.exe\" %1"
+@="\"F:\\编程与优化\\AutoHotKey\\AHK-Script-Manager\\ext\\ScreenshotView.exe\" \"%1\""
 

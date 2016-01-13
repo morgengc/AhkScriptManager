@@ -1,9 +1,0 @@
-Windows Registry Editor Version 5.00
-
-[HKEY_CLASSES_ROOT\*\shell]
-
-[HKEY_CLASSES_ROOT\*\shell\WebPage Test]
-
-[HKEY_CLASSES_ROOT\*\shell\WebPage Test\command]
-@="\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\" \"F:\\编程与优化\\AutoHotKey\\AHK Script Manager\\ext\\TomcatUrl.ahk\" %1"
-
