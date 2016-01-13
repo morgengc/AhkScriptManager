@@ -4,8 +4,8 @@
 ; 为此使用该程序，默认就以100%显示
 ; 
 ; 使用方法：
-; 		1. 注册3rd/ScreenshotView.reg，使右键菜单中加入ScreenshotView. 此操作仅需一次
-;       2. 在需要浏览的文件上点击右键，选择ScreenshotView打开
+; 	1. 注册3rd/ScreenshotView.reg，使右键菜单中加入ScreenshotView. 此操作仅需一次
+;   2. 在需要浏览的文件上点击右键，选择ScreenshotView打开
 ;
 ; gaochao.morgen@gmail.com
 ; 2016/6/12
@@ -17,6 +17,15 @@ SetBatchLines, -1
 
 #Include ../lib/Gdip.ahk
 
+ToolBarHeight := 28		; 任务栏高度
+Times := 0				; 鼠标滚动次数
+BgHeight := Round((A_ScreenHeight-ToolBarHeight))	; 背景图层高度
+Distance := Round((A_ScreenHeight-ToolBarHeight)/2)	; 每次滚动距离
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                        GUI                            ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ; Start gdi+
 If !pToken := Gdip_Startup()
 {
@@ -25,11 +34,11 @@ If !pToken := Gdip_Startup()
 }
 OnExit, GuiClose
 
-; Create a layered window (+E0x80000 : must be used for UpdateLayeredWindow to work!) that is always on top (+AlwaysOnTop), has no taskbar entry or caption
-Gui, 1: -Caption +E0x80000 +LastFound +AlwaysOnTop +ToolWindow +OwnDialogs
+; 图片图层
+; Create a layered window (+E0x80000 : must be used for UpdateLayeredWindow to work!)
+Gui, 1: -Caption +E0x80000 +LastFound +OwnDialogs
+Gui, 1: Show, Maximize
 
-; Show the window
-Gui, 1: Show, NA
 ; Get a handle to this window we have created in order to update it later
 hwnd1 := WinExist()
 
@@ -41,6 +50,7 @@ Loop, %0%
 	Break
 }
 
+; 加载图片文件
 pBitmap := Gdip_CreateBitmapFromFile(PicName)
 If !pBitmap
 {
@@ -53,25 +63,86 @@ Width := Gdip_GetImageWidth(pBitmap)
 Height := Gdip_GetImageHeight(pBitmap)
 
 ; 这个相当于画布，图像绘制在该区域
-hbm := CreateDIBSection(Width, Height)
+hbm := CreateDIBSection(A_ScreenWidth, A_ScreenHeight)
 hdc := CreateCompatibleDC()		; Get a device context compatible with the screen
 obm := SelectObject(hdc, hbm)	; Select the bitmap into the device context
 G := Gdip_GraphicsFromHDC(hdc)	; Get a pointer to the graphics of the bitmap, for use with drawing functions
-Gdip_SetInterpolationMode(G, 7)	; This specifies how a file will be resized (the quality of the resize)
 
-; 显示图片
-Gdip_DrawImage(G, pBitmap, 0, 0, Width, Height)
+; 画一个灰色背景
+pBrush := Gdip_BrushCreateSolid(0xFFD9D9D9)
+Gdip_FillRectangle(G, pBrush, 0, 0, A_ScreenWidth, BgHeight)
+Gdip_DeleteBrush(pBrush)
 
-; 更新hwnd1窗口
-UpdateLayeredWindow(hwnd1, hdc, 0, 0, Width, Height)
+Gosub PicDown
+Return
 
-SelectObject(hdc, obm)			; Select the object back into the hdc
-DeleteObject(hbm)				; Now the bitmap may be deleted
-DeleteDC(hdc)					; Also the device context related to the bitmap may be deleted
-Gdip_DeleteGraphics(G)			; The graphics may now be deleted
-Gdip_DisposeImage(pBitmap)		; The bitmap we made from the image may be deleted
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                    响应鼠标滚动事件                   ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;#######################################################################
+; 向下滚动图片
+#IfWinActive ahk_class AutoHotkeyGUI
+WheelDown::
+PicDown:
+	; 原图像中仅显示(sx, sy, sw, sh)区域
+	; 通常原图像的宽度都不会比屏幕宽(因为本程序浏览对象基本上都是网页截图)，但高度通常会比屏幕高
+	sx := 0
+	sy := Round(Distance*Times)
+	sw := Width
+	sh := (Round(A_ScreenHeight-ToolBarHeight) < Height) ? Round(A_ScreenHeight-ToolBarHeight) : Height
+	if (sy + sh >= Height) {
+		sy := Height - sh
+		;FileAppend, sy=%sy% sh=%sh%`n, debug.txt
+	} else {
+		Times++
+	}
+	
+	; 居中显示到这个位置
+	dx := Round((A_ScreenWidth/2) - (Width/2))
+	dy := Round(((A_ScreenHeight-ToolBarHeight)/2) - (sh/2))
+	dw := sw
+	dh := sh
+	
+	; 显示图片
+	Gdip_DrawImage(G, pBitmap, dx, dy, dw, dh, sx, sy, sw, sh)
+	
+	; 更新hwnd1窗口
+	UpdateLayeredWindow(hwnd1, hdc, 0, 0, A_ScreenWidth, A_ScreenHeight)
+Return
+
+; 向上滚动图片
+#IfWinActive ahk_class AutoHotkeyGUI
+WheelUp::
+PicUp:
+	if (Times <= 0) {
+		Return
+	} else {
+		Times--
+	}
+
+	; 原图像中仅显示(sx, sy, sw, sh)区域
+	; 通常原图像的宽度都不会比屏幕宽(因为本程序浏览对象基本上都是网页截图)，但高度通常会比屏幕高
+	sx := 0
+	sy := Round(Distance*Times)
+	sw := Width
+	sh := (Round(A_ScreenHeight-ToolBarHeight) < Height) ? Round(A_ScreenHeight-ToolBarHeight) : Height
+	
+	; 居中显示到这个位置
+	dx := Round((A_ScreenWidth/2) - (Width/2))
+	dy := Round(((A_ScreenHeight-ToolBarHeight)/2) - (sh/2))
+	dw := sw
+	dh := sh
+	
+	; 显示图片
+	Gdip_DrawImage(G, pBitmap, dx, dy, dw, dh, sx, sy, sw, sh)
+	
+	; 更新hwnd1窗口
+	UpdateLayeredWindow(hwnd1, hdc, 0, 0, A_ScreenWidth, A_ScreenHeight)
+Return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                       清理资源                        ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 Esc::
 q::
@@ -79,8 +150,13 @@ q::
 Return
 
 GuiClose:
-	; gdi+ may now be shutdown on exiting the program
-	Gdip_Shutdown(pToken)
+	SelectObject(hdc, obm)			; Select the object back into the hdc
+	DeleteObject(hbm)				; Now the bitmap may be deleted
+	DeleteDC(hdc)					; Also the device context related to the bitmap may be deleted
+	Gdip_DeleteGraphics(G)			; The graphics may now be deleted
+	Gdip_DisposeImage(pBitmap)		; The bitmap we made from the image may be deleted
+	
+	Gdip_Shutdown(pToken)			; gdi+ may now be shutdown on exiting the program
 	ExitApp
 Return
 
