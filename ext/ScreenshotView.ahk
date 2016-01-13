@@ -3,6 +3,9 @@
 ; 用Windows自带的图像浏览器打开，默认会自适应窗口，往往造成图片过小，需要手动调整为100%显示才能正常阅读
 ; 为此使用该程序，默认就以100%显示
 ; 
+; 本程序如果想要一个标题栏是比较困难的，因为使用了WS_EX_LAYERED拓展属性.
+; 如果想要显示一个标题栏，则需要换一种方法.
+; 
 ; 使用方法：
 ; 	1. 注册3rd/ScreenshotView.reg，使右键菜单中加入ScreenshotView. 此操作仅需一次
 ;   2. 在需要浏览的文件上点击右键，选择ScreenshotView打开
@@ -20,8 +23,8 @@ SetBatchLines, -1
 
 ToolBarHeight := Round(28*GetDpiScale())			; 任务栏高度
 Times := 0											; 鼠标滚动次数
-BgHeight := Round((A_ScreenHeight-ToolBarHeight))	; 背景图层高度
-Distance := Round((A_ScreenHeight-ToolBarHeight)/2)	; 每次滚动距离
+ViewHeight := Round((A_ScreenHeight-ToolBarHeight))	; 可视高度. 亦即图层的高度
+Distance := Round(ViewHeight/2)						; 每次滚动距离
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                        GUI                            ;
@@ -35,13 +38,14 @@ If !pToken := Gdip_Startup()
 }
 OnExit, GuiClose
 
-; 图片图层
-; Create a layered window (+E0x80000 : must be used for UpdateLayeredWindow to work!)
-Gui, 1: -Caption +E0x80000 +LastFound +OwnDialogs
+; -Owner 出现在任务栏
+; -Caption 无标题栏
+; +E0x80000 E表示窗口的拓展属性，0x80000即WS_EX_LAYERED. 创建一个layered window. 后面必须调用UpdateLayeredWindow()才会更新显示
+; +LastFound "上次找到的" 窗口, 让脚本更容易创建和维护
+; +OwnDialogs 让后续的对话框成为当前窗口的子窗口
+; +HwndMainHwnd Hwnd保存到MainHwnd中
+Gui, 1: -Owner -Caption +E0x80000 +LastFound +OwnDialogs +HwndMainHwnd
 Gui, 1: Show, Maximize
-
-; Get a handle to this window we have created in order to update it later
-hwnd1 := WinExist()
 
 ; 获取图片文件全名
 Loop, %0%
@@ -60,18 +64,18 @@ If !pBitmap
 }
 
 ; 原始图片宽度和高度
-Width := Gdip_GetImageWidth(pBitmap)
-Height := Gdip_GetImageHeight(pBitmap)
+PicWidth := Gdip_GetImageWidth(pBitmap)
+PicHeight := Gdip_GetImageHeight(pBitmap)
 
 ; 这个相当于画布，图像绘制在该区域
-hbm := CreateDIBSection(A_ScreenWidth, A_ScreenHeight)
+hbm := CreateDIBSection(A_ScreenWidth, ViewHeight)
 hdc := CreateCompatibleDC()		; Get a device context compatible with the screen
 obm := SelectObject(hdc, hbm)	; Select the bitmap into the device context
 G := Gdip_GraphicsFromHDC(hdc)	; Get a pointer to the graphics of the bitmap, for use with drawing functions
 
 ; 画一个灰色背景
 pBrush := Gdip_BrushCreateSolid(0xFFD9D9D9)
-Gdip_FillRectangle(G, pBrush, 0, 0, A_ScreenWidth, BgHeight)
+Gdip_FillRectangle(G, pBrush, 0, 0, A_ScreenWidth, ViewHeight)
 Gdip_DeleteBrush(pBrush)
 
 Gosub PicDown
@@ -89,26 +93,26 @@ PicDown:
 	; 通常原图像的宽度都不会比屏幕宽(因为本程序浏览对象基本上都是网页截图)，但高度通常会比屏幕高
 	sx := 0
 	sy := Round(Distance*Times)
-	sw := Width
-	sh := (Round(A_ScreenHeight-ToolBarHeight) < Height) ? Round(A_ScreenHeight-ToolBarHeight) : Height
-	if (sy + sh >= Height) {
-		sy := Height - sh
+	sw := PicWidth
+	sh := (ViewHeight < PicHeight) ? ViewHeight : PicHeight
+	if (sy + sh >= PicHeight) {
+		sy := PicHeight - sh
 		;FileAppend, sy=%sy% sh=%sh%`n, debug.txt
 	} else {
 		Times++
 	}
 	
 	; 居中显示到这个位置
-	dx := Round((A_ScreenWidth/2) - (Width/2))
-	dy := Round(((A_ScreenHeight-ToolBarHeight)/2) - (sh/2))
+	dx := Round((A_ScreenWidth/2) - (PicWidth/2))
+	dy := Round((ViewHeight/2) - (sh/2))
 	dw := sw
 	dh := sh
 	
 	; 显示图片
 	Gdip_DrawImage(G, pBitmap, dx, dy, dw, dh, sx, sy, sw, sh)
 	
-	; 更新hwnd1窗口
-	UpdateLayeredWindow(hwnd1, hdc, 0, 0, A_ScreenWidth, A_ScreenHeight)
+	; 更新MainHwnd窗口
+	UpdateLayeredWindow(MainHwnd, hdc, 0, 0, A_ScreenWidth, ViewHeight)
 Return
 
 ; 向上滚动图片
@@ -124,20 +128,20 @@ WheelUp::
 	; 通常原图像的宽度都不会比屏幕宽(因为本程序浏览对象基本上都是网页截图)，但高度通常会比屏幕高
 	sx := 0
 	sy := Round(Distance*Times)
-	sw := Width
-	sh := (Round(A_ScreenHeight-ToolBarHeight) < Height) ? Round(A_ScreenHeight-ToolBarHeight) : Height
+	sw := PicWidth
+	sh := (ViewHeight < PicHeight) ? ViewHeight : PicHeight
 	
 	; 居中显示到这个位置
-	dx := Round((A_ScreenWidth/2) - (Width/2))
-	dy := Round(((A_ScreenHeight-ToolBarHeight)/2) - (sh/2))
+	dx := Round((A_ScreenWidth/2) - (PicWidth/2))
+	dy := Round((ViewHeight/2) - (sh/2))
 	dw := sw
 	dh := sh
 	
 	; 显示图片
 	Gdip_DrawImage(G, pBitmap, dx, dy, dw, dh, sx, sy, sw, sh)
 	
-	; 更新hwnd1窗口
-	UpdateLayeredWindow(hwnd1, hdc, 0, 0, A_ScreenWidth, A_ScreenHeight)
+	; 更新MainHwnd窗口
+	UpdateLayeredWindow(MainHwnd, hdc, 0, 0, A_ScreenWidth, ViewHeight)
 Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

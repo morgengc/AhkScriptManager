@@ -16,7 +16,7 @@ ExeList := Object()
 
 ; 采用Object.Insert(Index, Value)的方式，Index表示第几秒启动，Value表示程序
 ExeList.Insert(0, "E:\DeskWidget\DeskWidget.exe")
-;ExeList.Insert(5, "C:\Program Files\Tencent\QQ\Bin\QQ.exe")
+ExeList.Insert(5, "C:\Program Files\Tencent\QQ\Bin\QQ.exe")
 
 Delay := 0
 Elapse := 0
