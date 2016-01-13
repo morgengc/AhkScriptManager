@@ -16,9 +16,10 @@
 SetBatchLines, -1
 
 #Include ../lib/Gdip.ahk
+#Include ../lib/DpiScale.ahk
 
-ToolBarHeight := 28		; 任务栏高度
-Times := 0				; 鼠标滚动次数
+ToolBarHeight := Round(28*GetDpiScale())			; 任务栏高度
+Times := 0											; 鼠标滚动次数
 BgHeight := Round((A_ScreenHeight-ToolBarHeight))	; 背景图层高度
 Distance := Round((A_ScreenHeight-ToolBarHeight)/2)	; 每次滚动距离
 
@@ -113,7 +114,6 @@ Return
 ; 向上滚动图片
 #IfWinActive ahk_class AutoHotkeyGUI
 WheelUp::
-PicUp:
 	if (Times <= 0) {
 		Return
 	} else {
@@ -146,6 +146,7 @@ Return
 
 Esc::
 q::
+RButton Up::	; 只有右键弹起时才起效. 否则关闭窗口以后，右键事件会传递到后面的窗口
 	Gosub GuiClose
 Return
 
