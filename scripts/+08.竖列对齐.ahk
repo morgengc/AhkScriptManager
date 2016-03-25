@@ -5,7 +5,7 @@
 ; 支持的文本编码方式: ANSI, UTF-8, UTF-8+BOM, UTF-16
 ;
 ; 注意: 需要将3rd/gawk.exe, 3rd/sed.exe, 3rd/cut.exe, 3rd/iconv.exe拷贝到系统目录
-; 或者将AHK Script Manager\3rd目录设置到PATH中
+; 或者将AhkScriptManager/3rd目录设置到PATH中
 ;
 ; 输入文本的编码，是本脚本重点考虑的问题
 ; 一方面，AHK处理的外部文件，推荐ANSI和UTF-8+BOM，它处理UTF-8会有问题.
