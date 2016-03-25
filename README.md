@@ -8,20 +8,20 @@ AhkScriptManager是一款用于管理常用ahk脚本执行的桌面工具，它�
 
 工具中出现了很多脚本，对于任何个人来说，这些脚本当中有些是适用的，有些却是不适用的，需要自己裁剪和改造。
 
-AhkScriptManager仅接管scripts目录中的脚本，对已运行的其他脚本不会造成影响(但存在热键冲突风险)。因此个人新添加的脚本必须加入到scripts目录，并重启AhkScriptManager以便刷新。
+AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚本不会造成影响(但存在热键冲突风险)。因此个人新添加的脚本必须加入到`scripts`目录，并重启AhkScriptManager以便刷新。
 
 本软件在XP和Win7上稳定运行，其他操作系统上未经测试!
 
 
 ## 安装说明
 
-1. 安装setup/AutoHotkey111401_Install.exe
+1. 安装`setup/AutoHotkey111401_Install.exe`。
 
-2. 将setup/AutoHotkey.chm拷贝到C:\Program Files\AutoHotkey目录，此步骤作用是用中文文档覆盖英文文档
+2. 将`setup/AutoHotkey.chm`拷贝到`C:\Program Files\AutoHotkey`目录，此步骤作用是用中文文档覆盖英文文档。
 
-3. 将3rd/*.exe和3rd/*.cmd拷贝到C:\WINDOWS\system32目录，此步骤作用是将脚本调用的外部程序和脚本拷贝到系统目录
+3. 将`3rd/*.exe`和`3rd/*.cmd`拷贝到`C:\WINDOWS\system32`目录，或将`3rd`添加到PATH中，方便AhkScriptManager调用这些外部程序。
 
-4. 运行AhkScriptManager.exe，任务栏右下角将出现该程序图标
+4. 运行AhkScriptManager.exe，任务栏右下角将出现该程序图标。
 
 ## 不同格式的ahk脚本命名代表不同含义
 * 正常命名的脚本:	会随AhkScriptManager启动而启动，关闭而关闭. 适用于常驻脚本. 通常这种脚本中含有快捷键，或者含有GUI，或者含有Timer.
