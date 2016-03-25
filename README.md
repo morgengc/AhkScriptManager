@@ -5,8 +5,6 @@ AHK-Script-Manager是一款用于管理常用ahk脚本运行的桌面工具. 更
 本软件在XP和Win7上稳定运行，其他操作系统上未经测试!
 
 
-------------
-
 ## 安装说明
 
 1. 安装setup/AutoHotkey111401_Install.exe
@@ -51,6 +49,7 @@ AHK-Script-Manager是一款用于管理常用ahk脚本运行的桌面工具. 更
 
 
 ## 其他说明
-项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/
+项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/ 
+
 在Autohotkey中文论坛上单独成贴，地址为: http://ahk8.com/thread-5250.html
 
