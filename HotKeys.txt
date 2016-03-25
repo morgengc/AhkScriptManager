@@ -1,36 +1,36 @@
-﻿AHK Script Manager
-	Ctrl + Alt + A			关闭所有脚本
-	Ctrl + Alt + 中键		唤出"重载脚本"菜单
-	Ctrl + Alt + 右键		唤出"关闭脚本"菜单
-	Ctrl + Alt + 左键		唤出"启动脚本"菜单
+AHK Script Manager
+    Ctrl + Alt + A           关闭所有脚本
+    Ctrl + Alt + 中键        唤出"重载脚本"菜单
+    Ctrl + Alt + 右键        唤出"关闭脚本"菜单
+    Ctrl + Alt + 左键        唤出"启动脚本"菜单
 
 !AHK帮助.ahk
-	Alt + H					在AHK帮助文件中查找剪切板内容
+    Alt + H                  在AHK帮助文件中查找剪切板内容
 
 CMD.ahk
-	Ctrl + L				仿Linux Term下Ctrl+L的清屏行为
-	Ctrl + U				清空当前输入的命令
-	Ctrl + V				CMD窗口粘贴
+    Ctrl + L                 仿Linux Term下Ctrl+L的清屏行为
+    Ctrl + U                 清空当前输入的命令
+    Ctrl + V                 CMD窗口粘贴
 
 TODO LIST.ahk
-	Enter					保存
-	Ctrl + Enter			文本换行
+    Enter                    保存
+    Ctrl + Enter             文本换行
 
 单词统计.ahk
-	F12						统计当前选中文字中的中英文单词数
+    F12                      统计当前选中文字中的中英文单词数
 
 截图.ahk
-	Ctrl + Shift + 左键		截图存为PNG图片，并保存到桌面
-	Ctrl + Shift + 右键		截图保存到ClipBoard中，用于直接粘贴
+    Ctrl + Shift + 左键      截图存为PNG图片，并保存到桌面
+    Ctrl + Shift + 右键      截图保存到ClipBoard中，用于直接粘贴
 
 锁屏.ahk
-	Win + L					锁屏并关闭屏幕
+    Win + L                  锁屏并关闭屏幕
 
 我的电脑.ahk
-	Win + E					打开我的电脑
+    Win + E                  打开我的电脑
 
 虚拟桌面.ahk
-	Alt + 1					切换到桌面1
-	Alt + 2					切换到桌面2
-	Ctrl + 1				发送到桌面1
-	Ctrl + 2				发送到桌面2
+    Alt + 1                  切换到桌面1
+    Alt + 2                  切换到桌面2
+    Ctrl + 1                 发送到桌面1
+    Ctrl + 2                 发送到桌面2
