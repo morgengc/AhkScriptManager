@@ -26,7 +26,15 @@
 
 #Include ../lib/DpiScale.ahk
 
-SavePath = %A_ScriptDir%\..\config\TODO.config
+; 若配置文件目录不存在，则创建
+ConfigPath = %A_ScriptDir%\..\config
+if (!IsDirExist(ConfigPath))
+	FileCreateDir, %ConfigPath%
+
+; 若配置文件不存在，则创建空白文件
+ConfigFile = %ConfigPath%\TODO.config
+IfNotExist, %ConfigFile%
+	FileAppend,, %ConfigFile%
 
 WINDOW_X := A_ScreenWidth - (380*GetDpiScale())	; 窗口起始X
 WINDOW_Y := 250	* GetDpiScale()					; 窗口起始Y
@@ -114,7 +122,7 @@ Load:
 	Critical				; 防止当前线程被其他线程中断
 	SetFormat, Integer, D	; 运算结果为10进制
 
-	IfNotExist, %SavePath%
+	IfNotExist, %ConfigFile%
 	{
 		AddNewField()
 		HideEditBorder(LastField)
@@ -123,7 +131,7 @@ Load:
 	}
 
 	LineCount := 0
-	Loop, Read, %SavePath%
+	Loop, Read, %ConfigFile%
 	{
 		; 跳过空行
 		pos := RegExMatch(A_LoopReadLine, "^([ \t]*)$")
@@ -160,9 +168,9 @@ Save:
 		NewFileContent .= EditContent . "`n"
 	}
 	StringTrimRight, NewFileContent, NewFileContent, 1
-	IfExist, %SavePath%
-		FileDelete, %SavePath%
-	FileAppend, %NewFileContent%, %SavePath%
+	IfExist, %ConfigFile%
+		FileDelete, %ConfigFile%
+	FileAppend, %NewFileContent%, %ConfigFile%
 Return
 
 ; 修改TODOLIST的内容
@@ -229,6 +237,18 @@ Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                       函数                            ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; 判断目录是否存在
+IsDirExist(DirName)
+{
+	if (FileExist(DirName))
+	{
+		if InStr(FileExist(DirName), "D")
+			return true
+	}
+
+	return false
+}
 
 ; 给Edit控件加上边框
 ShowEditBorder(EditIndex)
