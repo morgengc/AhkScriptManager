@@ -19,7 +19,7 @@ AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚�
 
 2. 将`setup/AutoHotkey.chm`拷贝到`C:\Program Files\AutoHotkey`目录，此步骤作用是用中文文档覆盖英文文档。
 
-3. 将`3rd/*.exe`和`3rd/*.cmd`拷贝到`C:\WINDOWS\system32`目录，或将`3rd`添加到PATH中，方便AhkScriptManager调用这些外部程序。
+3. 将`3rd`目录添加到PATH中，方便AhkScriptManager调用这些外部程序。
 
 4. 运行AhkScriptManager.exe，任务栏右下角将出现该程序图标。
 
