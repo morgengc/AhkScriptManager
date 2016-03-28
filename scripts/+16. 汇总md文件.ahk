@@ -1,6 +1,17 @@
 ﻿;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; 从所有子目录拷贝文件到一个目录
 ; Cmd Markdown一键导出的包默认按照Tag进行多目录存储，我需要将所有这些子目录的文件全部集中在一起
+; 目录结构类似于:
+; Cmd-Markdowns-2016-03-28-20-44
+; |-- AngularJS
+; |     AngularJS Phonecat示例学习.md
+; |     手动创建AngularJS项目.md
+; |     模板创建AngularJS项目.md
+; |
+; |-- Hadoop
+; |     RHadoop安装步骤.md
+; |     Sqoop1.4.6安装步骤.md
+; |     ZooKeeper3.4.6安装步骤.md
+; |     大数据工具链.md
 ;
 ; gaochao.morgen@gmail.com
 ; 2016/3/28
@@ -10,7 +21,7 @@
 #SingleInstance Force
 #NoEnv
 
-BgImage := A_ScriptDir . "/../resources/Cmd.png"
+BgImage = %A_ScriptDir%/../resources/Cmd.png
 if (!FileExist(BgImage))
 {
 	MsgBox, % BgImage . "未找到"
@@ -25,27 +36,41 @@ Gui, -Owner +LastFound
 Gui, Margin, 0, 0
 
 Gui, Add, Picture, vCanvas, %BgImage%
-Gui, Show,, 拖拽目录到窗口中
+Gui, Show,, 拖拽目录或者zip文件到窗口中
 
 Return
 
-; 响应文件夹拖动事件
+; 响应文件拖动事件
 GuiDropFiles:
-	; 提取文件夹全名
+	; 提取文件全名
 	Loop, parse, A_GuiEvent, `n
 	{
-		CurrentDir := A_LoopField
-		if (CurrentDir = "")
+		Target := A_LoopField
+		if (Target = "")
 			Return
 	    break
 	}
 
-	;MsgBox, %CurrentDir%
+	CurrentDir := Target
 
-	; 2 - 仅从子目录中移动文件
+	; 如果是zip文件，则新建目录，并解压缩到该目录，再处理
+	; 如果是已经解压缩的目录，则直接处理
+	SplitPath, Target,, Dir, Ext, FileNoExt
+	if (Ext = "zip")
+	{
+		OutDir = %Dir%\%FileNoExt%
+		if (!IsDirExist(OutDir))
+			FileCreateDir, %OutDir%
+		
+		UnzipCmd := GenerateUnzipCommand(Target, OutDir)
+		RunWait, cmd /c %UnzipCmd%,, Hide
+
+		CurrentDir := OutDir
+	}
+
+	; 2 - 仅针对子目录
 	Loop, %CurrentDir%\*, 2
 	{
-		;MsgBox, %A_LoopFileFullPath%
 		SetWorkingDir %A_LoopFileFullPath%
 	
 		; 依次移动每个文档
@@ -75,6 +100,18 @@ ExitApp
 ;                       函数                            ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+; 判断目录是否存在
+IsDirExist(DirName)
+{
+	if (FileExist(DirName))
+	{
+		if InStr(FileExist(DirName), "D")
+			return true
+	}
+
+	return false
+}
+
 ; 将指定文件拷贝到指定目录，并且重命名
 MoveMdToDir(OrigName, TargetDir, TargetName := "")
 {
@@ -103,5 +140,16 @@ MoveMdToDir(OrigName, TargetDir, TargetName := "")
 		FileAppend, `n, Error.log
 		Return
 	}
+}
+
+; 生成解压缩命令
+GenerateUnzipCommand(zipFile, dstDir)
+{
+	unzipcmd := "7z.exe x "
+    unzipcmd .= zipFile
+    unzipcmd .= " -o"
+    unzipcmd .= dstDir
+
+    Return unzipcmd
 }
 
