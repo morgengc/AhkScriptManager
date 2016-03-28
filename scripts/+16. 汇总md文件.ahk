@@ -63,6 +63,7 @@ GuiDropFiles:
 			FileCreateDir, %OutDir%
 		
 		UnzipCmd := GenerateUnzipCommand(Target, OutDir)
+		FileAppend, %UnzipCmd%, xxx
 		RunWait, cmd /c %UnzipCmd%,, Hide
 
 		CurrentDir := OutDir
@@ -86,11 +87,6 @@ GuiDropFiles:
 
 	SetWorkingDir %A_ScriptDir%
 	MsgBox, 全部md文件已经汇总完成
-Return
-
-Esc::
-q::
-	Gosub GuiClose
 Return
 
 GuiClose:
