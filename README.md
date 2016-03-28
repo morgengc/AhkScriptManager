@@ -59,7 +59,7 @@ AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚�
 
 
 ## 其他说明
-~~项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/ ~~
+~~项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/~~
 
 在Autohotkey中文论坛上单独成贴，地址为: http://ahk8.com/thread-5250.html
 
