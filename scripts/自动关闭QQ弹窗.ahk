@@ -9,6 +9,14 @@
 #NoTrayIcon
 #NoEnv
 
+; 若配置文件目录不存在，则创建
+LogPath = %A_ScriptDir%\..\log
+if (!IsDirExist(LogPath))
+	FileCreateDir, %LogPath%
+
+; 日志文件
+LogFile = %LogPath%\QQPopLog.txt
+
 SetTimer, KillQQPop, 1000
 return
 
@@ -24,7 +32,7 @@ KillQQPop:
 			{
 				WinClose
 				;TrayTip,喵了腾讯, 关闭了 %Title%
-				file := FileOpen("..\log\QQPopLog.txt", "a")
+				file := FileOpen(LogFile, "a")
 				file.WriteLine(A_YYYY " " A_MM " " A_DD " " A_Hour ":" A_Min ":" A_Sec " —— " Title  "`n`r")
 				file.Close()
 				;sleep 1000
@@ -33,3 +41,20 @@ KillQQPop:
 		}
 	}
 Return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                       函数                            ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; 判断目录是否存在
+IsDirExist(DirName)
+{
+	if (FileExist(DirName))
+	{
+		if InStr(FileExist(DirName), "D")
+			return true
+	}
+
+	return false
+}
+
