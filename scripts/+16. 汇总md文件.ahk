@@ -63,7 +63,7 @@ GuiDropFiles:
 			FileCreateDir, %OutDir%
 		
 		UnzipCmd := GenerateUnzipCommand(Target, OutDir)
-		FileAppend, %UnzipCmd%, xxx
+		;FileAppend, %UnzipCmd%, xxx
 		RunWait, cmd /c %UnzipCmd%,, Hide
 
 		CurrentDir := OutDir
