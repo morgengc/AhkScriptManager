@@ -63,7 +63,6 @@ GuiDropFiles:
 			FileCreateDir, %OutDir%
 		
 		UnzipCmd := GenerateUnzipCommand(Target, OutDir)
-		;FileAppend, %UnzipCmd%, xxx
 		RunWait, cmd /c %UnzipCmd%,, Hide
 
 		CurrentDir := OutDir
@@ -84,6 +83,40 @@ GuiDropFiles:
 	; 删除所有子目录
 	Loop, %CurrentDir%\*, 2
 		FileRemoveDir, %A_LoopFileFullPath%
+	
+	; 查询所有.md文件，找到附件URL
+	combine := ParseUrlList()
+	RunWait, cmd /c %combine%,, Hide
+
+	; 设置进度条
+	Progress, FS8 FM10 H80 W300,, 正在下载资源,, Courier New
+
+	; 统计资源数量
+	ResCount := 0
+	Loop, Read, url.txt
+		ResCount := ResCount + 1
+	
+	; 依次下载附件
+	Loop, Read, url.txt
+	{
+		; 更新进度条
+		Percent := Round(A_Index*100/ResCount)
+		Progress, %Percent%, %A_LoopReadLine%
+
+		SplitPath, A_LoopReadLine, name
+		dirname := GetDirName(A_LoopReadLine)
+		FileCreateDir, %dirname%	; 该目录及其父目录如果不存在，均会创建
+		if (ErrorLevel != 0)
+		{
+			MsgBox, 创建目录失败
+			continue
+		}
+
+		name := dirname . name
+		UrlDownloadToFile, %A_LoopReadLine%, %name%
+	}
+
+	Progress, Off
 
 	SetWorkingDir %A_ScriptDir%
 	MsgBox, 全部md文件已经汇总完成
@@ -148,4 +181,23 @@ GenerateUnzipCommand(zipFile, dstDir)
 
     Return unzipcmd
 }
+
+; 从*.md文件中解析所有附件的URL
+ParseUrlList()
+{
+	; 采用PCRE正则. 匹配的字符串格式为"[1]: http://static.zybuluo.com/morgen/9nvm3lj1u4hjc5zk3h4iu79r/bash.png"
+	cmd := "grep -P ""\[\d+\]: .*\.[a-zA-Z]{3,4}$"" *.md | gawk ""BEGIN{FS=\"": \""} {print $3}"" > url.txt"
+	Return cmd
+}
+
+; 从URL中解析目录结构
+GetDirName(url)
+{
+	StringGetPos, pos1, url, //	    	; "//"的位置
+	StringGetPos, pos2, url, /, R1  	; 从右开始，第1个"/"的位置
+	dir := SubStr(url, pos1+1+2, pos2-pos1-1)
+	StringReplace, out, dir, /, \, All	; 
+	Return out
+}
+
 
