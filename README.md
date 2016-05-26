@@ -10,7 +10,7 @@ AhkScriptManager是一款用于管理常用ahk脚本执行的桌面工具，它�
 
 AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚本不会造成影响(但存在热键冲突风险)。因此个人新添加的脚本必须加入到`scripts`目录，并重启AhkScriptManager以便刷新。
 
-本软件在XP和Win7上稳定运行，其他操作系统上未经测试!
+本软件在XP/Server2003/Win7上稳定运行，其他操作系统上未经测试!
 
 
 ## 安装说明
@@ -19,7 +19,7 @@ AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚�
 
 2. 将`setup/AutoHotkey.chm`拷贝到`C:\Program Files\AutoHotkey`目录，此步骤作用是用中文文档覆盖英文文档。
 
-3. 将`3rd`目录添加到PATH中，方便AhkScriptManager调用这些外部程序。
+3. ~~将`3rd`目录添加到PATH中，方便AhkScriptManager调用这些外部程序。~~ AhkScriptManager启动时已经将`3rd`目录自动加入PATH。
 
 4. 运行AhkScriptManager.exe，任务栏右下角将出现该程序图标。
 
