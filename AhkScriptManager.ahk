@@ -36,6 +36,9 @@ SetWorkingDir %A_ScriptDir%\scripts\
 DetectHiddenWindows On  ; 允许探测脚本中隐藏的主窗口. 很多子程序均是以隐藏方式运行的
 SetTitleMatchMode 2     ; 避免需要指定如下所示的文件的完整路径
 
+EnvGet, Paths, PATH
+EnvSet, PATH, %A_ScriptDir%\3rd`;%Paths%	; 设置环境变量. 通过AhkScriptManager启动的程序均持有该环境变量
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                     初始化                            ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
