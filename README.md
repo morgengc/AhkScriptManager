@@ -54,7 +54,7 @@ AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚�
 | 软件 | 版本 |
 | ---- | ---- |
 | AHK | AutoHotkey_L Unicode, 版本号1.1.14.01 |
-| 操作系统 | Windows XP SP3 / Windows7 |
+| 操作系统 | Windows XP SP3/Windows Server 2003/Windows7 |
 | ahk脚本编码 | UTF-8+BOM |
 
 
