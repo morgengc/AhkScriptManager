@@ -85,8 +85,7 @@ GuiDropFiles:
 		FileRemoveDir, %A_LoopFileFullPath%
 	
 	; 查询所有.md文件，找到附件URL
-	combine := ParseUrlList()
-	RunWait, cmd /c %combine%,, Hide
+	ParseUrlList()
 
 	; 设置进度条
 	Progress, FS8 FM10 H80 W300,, 正在下载资源,, Courier New
@@ -182,13 +181,19 @@ GenerateUnzipCommand(zipFile, dstDir)
     Return unzipcmd
 }
 
-; 从*.md文件中解析所有附件的URL
+; 从*.md文件中解析所有资源的URL
 ParseUrlList()
 {
 	; 采用PCRE正则. 匹配的字符串格式为"[1]: http://static.zybuluo.com/morgen/9nvm3lj1u4hjc5zk3h4iu79r/bash.png"
+	; 这是Cmd Markdown特有的格式，上传到服务器上的资源均采用这种格式
 	; 按理说，保存为url.txt后，使用"wget -p -i url.txt"即可以下载全部资源，然而Windows下的wget并不能很好地处理中文URL，因此放弃wget
-	cmd := "grep -P ""\[\d+\]: .*\.[a-zA-Z]{3,4}$"" *.md | gawk ""BEGIN{FS=\"": \""} {print $3}"" > url.txt"
-	Return cmd
+	cmd := "grep -P ""\[\d+\]: [a-zA-z]+://[^\s]*\.[a-zA-Z]{3,4}$"" *.md | gawk ""BEGIN{FS=\"": \""} {print $3}"" > url.txt"
+	RunWait, cmd /c %cmd%,, Hide
+
+	; 匹配的字符串格式为"![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)"
+	; 这是外链格式，适合外部图床. 追加到url.txt中. 这种模式下仅考虑图片资源
+	cmd := "grep -P ""\([a-zA-z]+://[^\s]*\.(png|PNG|jpg|JPG|jpeg|JPEG)\)"" *.md | gawk ""BEGIN{FS=\""[()]\""} {print $2}"" >> url.txt"
+	RunWait, cmd /c %cmd%,, Hide
 }
 
 ; 从URL中解析目录结构
