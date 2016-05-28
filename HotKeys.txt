@@ -1,4 +1,4 @@
-AHK Script Manager
+AhkScriptManager
     Ctrl + Alt + A           关闭所有脚本
     Ctrl + Alt + 中键        唤出"重载脚本"菜单
     Ctrl + Alt + 右键        唤出"关闭脚本"菜单
@@ -29,8 +29,3 @@ TODO LIST.ahk
 我的电脑.ahk
     Win + E                  打开我的电脑
 
-虚拟桌面.ahk
-    Alt + 1                  切换到桌面1
-    Alt + 2                  切换到桌面2
-    Ctrl + 1                 发送到桌面1
-    Ctrl + 2                 发送到桌面2
