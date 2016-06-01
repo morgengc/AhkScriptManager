@@ -1,5 +1,7 @@
 ﻿;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Cmd Markdown一键导出的包默认按照Tag进行多目录存储，我需要将所有这些子目录的文件全部集中在一起
+; 并且下载*.md文档中引用的资源(包括图片，附件等)
+; 
 ; 目录结构类似于:
 ; Cmd-Markdowns-2016-03-28-20-44
 ; |-- AngularJS
@@ -82,9 +84,9 @@ GuiDropFiles:
 
 	; 删除所有子目录
 	Loop, %CurrentDir%\*, 2
-		FileRemoveDir, %A_LoopFileFullPath%
+		FileRemoveDir, %A_LoopFileFullPath%, 1
 	
-	; 查询所有.md文件，找到附件URL
+	; 查询所有.md文件，找到资源URL
 	ParseUrlList()
 
 	; 设置进度条
@@ -95,7 +97,7 @@ GuiDropFiles:
 	Loop, Read, url.txt
 		ResCount := ResCount + 1
 	
-	; 依次下载附件
+	; 依次下载资源
 	Loop, Read, url.txt
 	{
 		; 更新进度条
@@ -114,6 +116,19 @@ GuiDropFiles:
 		name := dirname . name
 		UrlDownloadToFile, %A_LoopReadLine%, %name%
 	}
+
+	; 将资源目录进行压缩，并删除
+	Loop, %CurrentDir%\*, 2
+	{
+		ZipCmd := GenerateZipCommand(A_LoopFileFullPath, "resource.zip")
+		RunWait, cmd /c %ZipCmd%,, Hide
+		FileRemoveDir, %A_LoopFileFullPath%, 1
+	}
+
+	; 将url.txt加入压缩文件，并删除
+	ZipCmd := GenerateZipCommand("url.txt", "resource.zip")
+	RunWait, cmd /c %ZipCmd%,, Hide
+	FileDelete, url.txt
 
 	Progress, Off
 
@@ -179,6 +194,17 @@ GenerateUnzipCommand(zipFile, dstDir)
     unzipcmd .= dstDir
 
     Return unzipcmd
+}
+
+; 生成压缩命令
+GenerateZipCommand(dir, zipFile)
+{
+	zipcmd := "7z.exe a "
+    zipcmd .= zipFile
+    zipcmd .= " "
+    zipcmd .= dir
+
+    Return zipcmd
 }
 
 ; 从*.md文件中解析所有资源的URL
