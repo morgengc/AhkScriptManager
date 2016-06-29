@@ -27,7 +27,7 @@ BgImage = %A_ScriptDir%/../resources/Cmd.png
 if (!FileExist(BgImage))
 {
 	MsgBox, % BgImage . "未找到"
-	ExitApp
+	;ExitApp
 }
 
 ; +Owner，任务栏中不出现，ALT-TAB中出现. -Owner，任务栏中出现，ALT-TAB中出现. 默认是-Owner
@@ -188,7 +188,7 @@ MoveMdToDir(OrigName, TargetDir, TargetName := "")
 ; 生成解压缩命令
 GenerateUnzipCommand(zipFile, dstDir)
 {
-	unzipcmd := "7z.exe x "
+    unzipcmd := "7z.exe x "
     unzipcmd .= zipFile
     unzipcmd .= " -o"
     unzipcmd .= dstDir
@@ -199,7 +199,7 @@ GenerateUnzipCommand(zipFile, dstDir)
 ; 生成压缩命令
 GenerateZipCommand(dir, zipFile)
 {
-	zipcmd := "7z.exe a "
+    zipcmd := "7z.exe a "
     zipcmd .= zipFile
     zipcmd .= " "
     zipcmd .= dir
