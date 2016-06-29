@@ -31,6 +31,8 @@ AhkScriptManager仅接管`scripts`目录中的脚本，对已运行的其他脚�
 ## 快捷键说明
 参见[HotKeys.txt](https://github.com/morgengc/AHK-Script-Manager/blob/master/HotKeys.txt).
 
+**注意**：快捷键组合中，应先按 `Alt`，再按 `Ctrl`，再按其他键。先按 `Ctrl` 再按 `Alt` 唤不出菜单，谁能告诉我原因。。。
+
 个人愿望，是希望通过AhkScriptManager方便桌面操作。但对于快捷键的使用上，主张够用就好，本人并不赞同太多的快捷键设置。
 
 ## 目录设置
