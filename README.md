@@ -1,6 +1,6 @@
 # AhkScriptManager
 
-AhkScriptManager是一款用于管理常用ahk脚本执行的桌面工具，它可以方便地控制常用ahk脚本的启动、关闭、重载。本项目致力于常用ahk脚本的开发，而AhkScriptManager本身的变动可能会比较小。
+AhkScriptManager是一款用于管理常用ahk脚本执行的桌面工具，它可以方便地控制常用ahk脚本的启动、关闭、重载。本项目致力于常用ahk脚本的开发，而AhkScriptManager.ahk的变动可能会比较小。
 
 接触AHK一段时间以后，已经积累了不少脚本，有各种大牛的，有自己写的。一些脚本确实会加快日常操作，但是哪些脚本需要常驻，哪些脚本需要临时启动停止，状态栏存在过多的Tray图标等等成了一个棘手的问题。
 
