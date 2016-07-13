@@ -20,7 +20,7 @@ AhkScriptManager 仅接管 `scripts` 目录中的脚本，对已运行的其他�
 
  3. ~~将 `3rd` 目录添加到 PATH 中，方便 AhkScriptManager 调用这些外部程序。~~ AhkScriptManager 启动时已经将 `3rd` 目录自动加入 PATH。
 
- 4. 运行 AhkScriptManager.exe，任务栏右下角将出现该程序图标。
+ 4. 运行 `AhkScriptManager.exe`，任务栏右下角将出现该程序图标。
 
 ## 不同格式的 ahk 脚本命名代表不同含义
  * 正常命名的脚本:	会随 AhkScriptManager 启动而启动，关闭而关闭，适用于常驻脚本。通常这种脚本中含有快捷键，或者含有 GUI，或者含有 Timer。
