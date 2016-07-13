@@ -10,26 +10,27 @@ AhkScriptManager 是一款用于管理常用ahk脚本执行的桌面工具，它
 
 AhkScriptManager 仅接管 `scripts` 目录中的脚本，对已运行的其他脚本不会造成影响(但存在热键冲突风险)。因此个人新添加的脚本必须加入到 `scripts` 目录，并重启 AhkScriptManager 以便刷新。
 
-本软件在 XP/Server2003/Win7 上稳定运行，其他操作系统上未经测试!
-
+本软件在 XP/Server2003/Win7 上稳定运行，其他操作系统上未经测试。
 
 ## 安装说明
 
-1. 安装 `setup/AutoHotkey111401_Install.exe`。
+ 1. 安装 `setup/AutoHotkey111401_Install.exe`。
 
-2. 将 `setup/AutoHotkey.chm` 拷贝到 `C:\Program Files\AutoHotkey` 目录，此步骤作用是用中文文档覆盖英文文档。
+ 2. 将 `setup/AutoHotkey.chm` 拷贝到 `C:\Program Files\AutoHotkey` 目录，此步骤作用是用中文文档覆盖英文文档。
 
-3. ~~将 `3rd` 目录添加到 PATH 中，方便 AhkScriptManager 调用这些外部程序。~~ AhkScriptManager 启动时已经将 `3rd` 目录自动加入 PATH。
+ 3. ~~将 `3rd` 目录添加到 PATH 中，方便 AhkScriptManager 调用这些外部程序。~~ AhkScriptManager 启动时已经将 `3rd` 目录自动加入 PATH。
 
-4. 运行 AhkScriptManager.exe，任务栏右下角将出现该程序图标。
+ 4. 运行 AhkScriptManager.exe，任务栏右下角将出现该程序图标。
 
 ## 不同格式的 ahk 脚本命名代表不同含义
-* 正常命名的脚本:	会随 AhkScriptManager 启动而启动，关闭而关闭，适用于常驻脚本。通常这种脚本中含有快捷键，或者含有 GUI，或者含有 Timer。
-* !开头的脚本:	需要手动启动(Alt+Ctrl+左键)，启动后会驻守，可以手动关闭，适用于某段时间需要常驻的脚本。这种脚本在结束时通常要考虑恢复系统的一些状态。
-* +开头的脚本:	启动后只执行一次任务，执行完自动退出或手动退出，不会驻守，适用于执行一次性任务。通常用来完成一些简单任务，比如启动应用程序。
+ * 正常命名的脚本:	会随 AhkScriptManager 启动而启动，关闭而关闭，适用于常驻脚本。通常这种脚本中含有快捷键，或者含有 GUI，或者含有 Timer。
+ 
+ * `!` 开头的脚本:	需要手动启动（`Alt+Ctrl+左键`），启动后会驻守，可以手动关闭，适用于某段时间需要常驻的脚本。这种脚本在结束时通常要考虑恢复系统的一些状态。
+ 
+ * `+` 开头的脚本:	启动后只执行一次任务，执行完自动退出或手动退出，不会驻守，适用于执行一次性任务。通常用来完成一些简单任务，比如启动应用程序。
 
 ## 快捷键说明
-参见[HotKeys.txt](https://github.com/morgengc/AHK-Script-Manager/blob/master/HotKeys.txt).
+参见 [HotKeys.txt](https://github.com/morgengc/AHK-Script-Manager/blob/master/HotKeys.txt)。
 
 **注意**：快捷键组合中，应先按 `Alt`，再按 `Ctrl`，再按其他键。先按 `Ctrl` 再按 `Alt` 唤出的菜单会闪退，谁能告诉我原因。。。
 
@@ -61,7 +62,9 @@ AhkScriptManager 仅接管 `scripts` 目录中的脚本，对已运行的其他�
 
 
 ## 其他说明
-~~项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/~~
+~~项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/ 。~~
+
+项目目前托管地址：https://github.com/morgengc/AhkScriptManager
 
 在 Autohotkey 中文论坛上单独成贴，地址为: http://ahk8.com/thread-5250.html
 
