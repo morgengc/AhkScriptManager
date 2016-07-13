@@ -69,6 +69,11 @@ GuiDropFiles:
 
 		CurrentDir := OutDir
 	}
+	else if (Ext = "md")
+	{
+		MsgBox, 请将所有md文件放置到一个目录中，并将该目录拖动到本程序上
+		Return
+	}
 
 	; 2 - 仅针对子目录
 	Loop, %CurrentDir%\*, 2
@@ -213,12 +218,13 @@ ParseUrlList()
 	; 采用PCRE正则. 匹配的字符串格式为"[1]: http://static.zybuluo.com/morgen/9nvm3lj1u4hjc5zk3h4iu79r/bash.png"
 	; 这是Cmd Markdown特有的格式，上传到服务器上的资源均采用这种格式
 	; 按理说，保存为url.txt后，使用"wget -p -i url.txt"即可以下载全部资源，然而Windows下的wget并不能很好地处理中文URL，因此放弃wget
-	cmd := "grep -P ""\[\d+\]: [a-zA-z]+://[^\s]*\.[a-zA-Z]{3,4}$"" *.md | gawk ""BEGIN{FS=\"": \""} {print $3}"" > url.txt"
+	; -H 总是打印文件名. 只有一个文件时默认不打印，会对解析造成影响
+	cmd := "grep -P -H ""\[\d+\]: [a-zA-z]+://[^\s]*\.[a-zA-Z]{3,4}$"" *.md | gawk ""BEGIN{FS=\"": \""} {print $3}"" > url.txt"
 	RunWait, cmd /c %cmd%,, Hide
 
 	; 匹配的字符串格式为"![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)"
 	; 这是外链格式，适合外部图床. 追加到url.txt中. 这种模式下仅考虑图片资源
-	cmd := "grep -P ""\([a-zA-z]+://[^\s]*\.(png|PNG|jpg|JPG|jpeg|JPEG)\)"" *.md | gawk ""BEGIN{FS=\""[()]\""} {print $2}"" >> url.txt"
+	cmd := "grep -P -H ""\([a-zA-z]+://[^\s]*\.(png|PNG|jpg|JPG|jpeg|JPEG)\)"" *.md | gawk ""BEGIN{FS=\""[()]\""} {print $2}"" >> url.txt"
 	RunWait, cmd /c %cmd%,, Hide
 }
 
