@@ -9,7 +9,7 @@
 #Include ../lib/DpiScale.ahk
 
 ; Adjust X & Y to suit your screen res
-StartX := A_ScreenWidth - (360*GetDpiScale())
+StartX := A_ScreenWidth - (376*GetDpiScale())
 StartY := 1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
