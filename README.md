@@ -12,6 +12,8 @@ AhkScriptManager 仅接管 `scripts` 目录中的脚本，对已运行的其他�
 
 本软件在 XP/Server2003/Win7 上稳定运行，其他操作系统上未经测试。
 
+**注意**：Win7系统对程序权限控制较为严格，某些指令执行时需要管理员权限，比如 `+03.Oracle服务.ahk` 里使用了 `cmd /c net start` 命令，如果没有以管理员权限运行，程序将不会正确执行。建议将 `AhkScriptManager.exe` 设置为以管理员权限运行（程序上点击右键，选择属性，选择兼容性，勾选以管理员身份运行此程序），这样可以保证 `scripts` 目录里的脚本均已管理员权限运行。
+
 ## 安装说明
 
  1. 安装 `setup/AutoHotkey111401_Install.exe`。
