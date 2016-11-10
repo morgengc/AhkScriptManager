@@ -25,7 +25,7 @@ KillQQPop:
 	{
 		;sleep 1000
 		WinGetPos, Xpos, Ypos, Width, Height
-		if (Width < 400 AND A_ScreenWidth <(Xpos + 400) AND A_ScreenHeight <(Ypos + 400))
+		if (Width < 400 AND A_ScreenWidth <(Xpos + 500) AND A_ScreenHeight <(Ypos + 500))
 		{
 			WinGetTitle, Title
 			if (StrLen(Title)!= 0 AND Title!= "QQ" AND !(Title~="@") AND !(Title~="(") AND !(Title="TXMenuWindow"))
