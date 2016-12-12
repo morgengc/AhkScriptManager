@@ -8,7 +8,6 @@
 
 #Persistent
 #SingleInstance Force
-#NoTrayIcon
 #NoEnv
 
 SetWorkingDir %A_ScriptDir%

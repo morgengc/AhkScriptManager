@@ -122,18 +122,31 @@ GuiDropFiles:
 		UrlDownloadToFile, %A_LoopReadLine%, %name%
 	}
 
+	Progress,,, 正在打包,, Courier New 
+
+	ZipFile := "resource.zip"
+	Progress, 99, %ZipFile%
+
 	; 将资源目录进行压缩，并删除
 	Loop, %CurrentDir%\*, 2
 	{
-		ZipCmd := GenerateZipCommand(A_LoopFileFullPath, "resource.zip")
+		ZipCmd := GenerateZipCommand(A_LoopFileFullPath, ZipFile)
 		RunWait, cmd /c %ZipCmd%,, Hide
 		FileRemoveDir, %A_LoopFileFullPath%, 1
 	}
 
 	; 将url.txt加入压缩文件，并删除
-	ZipCmd := GenerateZipCommand("url.txt", "resource.zip")
+	ZipCmd := GenerateZipCommand("url.txt", ZipFile)
 	RunWait, cmd /c %ZipCmd%,, Hide
 	FileDelete, url.txt
+
+	ZipFile := FileNoExt . ".zip"
+	Progress, 100, %ZipFile%
+
+	; 将*.md文档进行压缩，并删除
+	ZipCmd := GenerateZipCommand("*.md", ZipFile)
+	RunWait, cmd /c %ZipCmd%,, Hide
+	FileDelete, *.md
 
 	Progress, Off
 

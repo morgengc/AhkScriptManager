@@ -31,7 +31,7 @@ IfWinActive, ahk_class CabinetWClass
 
 SplitPath, TargetDir,,,,, OutDrive
 
-Run, cmd.exe
+Run, cmd.exe,, Max
 SendInput %OutDrive%{Enter}
 SendInput {Raw}cd %TargetDir%
 SendInput {Enter}
