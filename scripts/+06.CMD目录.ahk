@@ -31,15 +31,23 @@ IfWinActive, ahk_class CabinetWClass
 
 SplitPath, TargetDir,,,,, OutDrive
 
-Run, cmd.exe,, Max
+Run, cmd.exe,, Max, pid
+BringWindowToFront(pid)
+
 SendInput %OutDrive%{Enter}
 SendInput {Raw}cd %TargetDir%
 SendInput {Enter}
-SendInput clear{Enter}	; clear.cmd内容如下, 需要将clear.cmd放入PATH中. cls也可以直接用，但顶端一行空行无法清除
+SendInput clear{Enter}	; 3rd/clear.cmd
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;                  clear.cmd                  ;
+;                   函数                      ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; @echo off
-; cls %*
+
+; 让指定进程的窗口置顶
+BringWindowToFront(pid)
+{
+	WinSet, AlwaysOnTop, On, ahk_pid %pid%
+	Sleep, 100
+	WinSet, AlwaysOnTop, Off, ahk_pid %pid%
+}
 
