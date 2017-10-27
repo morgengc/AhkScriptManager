@@ -49,8 +49,12 @@ OnExit ExitSub
 
 GoSub CreateMenus
 
-OpenList := Array()
-UnOpenList := Array()
+OpenListTemp := Array()		; 已运行程序列表中的临时驻守脚本
+OpenListDeamon := Array()	; 已运行程序列表中的驻守脚本
+
+UnOpenListTemp := Array()	; 未运行程序列表中的临时驻守脚本
+UnOpenListOnce := Array()	; 未运行程序列表中的非驻守脚本
+UnOpenListDeamon := Array()	; 未运行程序列表中的驻守脚本
 
 ; 遍历scripts目录下的ahk文件
 Loop, %A_ScriptDir%\scripts\*.ahk
@@ -67,14 +71,26 @@ Loop, %A_ScriptDir%\scripts\*.ahk
 
     scriptsName%scriptCount% := A_LoopFileName
     scriptsOpened%scriptCount% = 0
-    UnOpenList.Insert(menuName)
+
+	IfInString, menuName, ! ; 文件名中含"!"表示临时驻守脚本
+	{
+		UnOpenListTemp.Insert(menuName)
+		Continue
+	}
+
+    IfInString, menuName, + ; 文件名中含"+"表示非驻守脚本
+	{
+		UnOpenListOnce.Insert(menuName)
+		Continue
+	}
+
+    UnOpenListDeamon.Insert(menuName)
 }
 
-InsertionSort(UnOpenList)
-for Index, menuName in UnOpenList
-{
-    Menu, scripts_unopen, add, %menuName%, tsk_open
-}
+; 依次添加脚本到启动脚本菜单，类型间加入分隔线
+AddToUnOpenMenu(UnOpenListTemp)
+AddToUnOpenMenu(UnOpenListOnce)
+AddToUnOpenMenu(UnOpenListDeamon, false)
 
 ; 主菜单
 Menu, Tray, Icon, %A_ScriptDir%\resources\ahk.ico
@@ -142,7 +158,7 @@ tsk_open:
             IfWinNotExist, %thisScript% - AutoHotkey    ; 没有打开
                 Run, %A_ScriptDir%\scripts\%thisScript%
     
-            IfInString, thisScript, + ; 文件名中含"+"表示非驻守脚本，执行完会立即退出
+            IfInString, thisScript, + ; 文件名中含"+"表示非驻守脚本
                 Break
     
             scriptsOpened%A_Index% := 1
@@ -181,23 +197,23 @@ tsk_restart:
     }
 Return
 
-; 启动所有可自启动脚本，从读文件开始就已经被排序了，所以无需排序
+; 启动所有驻守脚本，从读文件开始就已经被排序了，所以无需排序
 tsk_openAll:
     Loop, %scriptCount%
     {
         thisScript := scriptsName%A_Index%
         if scriptsOpened%A_Index% = 0 ; 没打开
         {
-            IfInString, thisScript, ! ; 文件名中含"!"表示不自动启动脚本，则不启动
+            IfInString, thisScript, ! ; 文件名中含"!"表示临时驻守脚本，则不启动
             {
                 if scriptsExisted%A_Index% != 1 ; AHK Manager启动前该脚本未启动
-                    continue
+                    Continue
             }
     
             IfInString, thisScript, + ; 文件名中含"+"表示非驻守脚本，不启动
             {
                 if scriptsExisted%A_Index% != 1
-                    continue
+                    Continue
             }
     
             IfWinNotExist, %thisScript% - AutoHotkey ; 没有打开
@@ -310,29 +326,52 @@ RecreateMenus:
 
     GoSub CreateMenus
 
-    OpenList := Array()     ; 已打开脚本列表
-    UnOpenList := Array()   ; 未打开脚本列表
+    OpenListTemp := Array()
+    OpenListDeamon := Array()
+
+    UnOpenListTemp := Array()
+    UnOpenListOnce := Array()
+    UnOpenListDeamon := Array()
+
     Loop, %scriptCount%
     {
 		StringTrimRight, menuName, scriptsName%A_Index%, StrLen(".ahk")
         if scriptsOpened%A_Index% = 1
-            OpenList.Insert(menuName)
-        if scriptsOpened%A_Index% = 0
-            UnOpenList.Insert(menuName)
+		{
+			IfInString, menuName, ! ; 文件名中含"!"表示临时驻守脚本
+			{
+				OpenListTemp.Insert(menuName)
+				Continue
+			}
+
+            OpenListDeamon.Insert(menuName)
+		}
+		else if scriptsOpened%A_Index% = 0
+		{
+			IfInString, menuName, ! ; 文件名中含"!"表示临时驻守脚本
+			{
+            	UnOpenListTemp.Insert(menuName)
+				Continue
+			}
+
+    		IfInString, menuName, + ; 文件名中含"+"表示非驻守脚本
+			{
+				UnOpenListOnce.Insert(menuName)
+				Continue
+			}
+
+			UnOpenListDeamon.Insert(menuName)
+		}
     }
     
-    InsertionSort(OpenList) ; 排序
-    for Index, menuName in OpenList
-    {
-        Menu, scripts_unclose, Add, %menuName%, tsk_close
-        Menu, scripts_restart, Add, %menuName%, tsk_restart
-    }
+	; 依次添加脚本到重载脚本/关闭脚本菜单，类型间加入分隔线
+	AddToOpenMenu(OpenListTemp)
+	AddToOpenMenu(OpenListDeamon, false)
     
-    InsertionSort(UnOpenList)
-    for Index, menuName in UnOpenList
-    {
-        Menu, scripts_unopen, Add, %menuName%, tsk_open
-    }
+	; 依次添加脚本到启动脚本菜单，类型间加入分隔线
+	AddToUnOpenMenu(UnOpenListTemp)
+	AddToUnOpenMenu(UnOpenListOnce)
+	AddToUnOpenMenu(UnOpenListDeamon, false)
 Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -383,5 +422,45 @@ GetMemory(WmiInfo, PID)
     }
 
     Return "0K"
+}
+
+; 为启动脚本菜单添加一种类型的脚本
+AddToUnOpenMenu(UnOpenList, AllowSplit=true)
+{
+	InsertionSort(UnOpenList)
+	for Index, menuName in UnOpenList
+		Menu, scripts_unopen, add, %menuName%, tsk_open
+	
+	; 必要时加分隔线
+	if (AllowSplit = true)
+	{
+		for Files in UnOpenList
+		{
+			Menu, scripts_unopen, Add
+			Break
+		}
+	}
+}
+
+; 为重载脚本/关闭脚本菜单添加一种类型的脚本
+AddToOpenMenu(OpenList, AllowSplit=true)
+{
+	InsertionSort(OpenList)
+    for Index, menuName in OpenList
+    {
+        Menu, scripts_unclose, Add, %menuName%, tsk_close
+        Menu, scripts_restart, Add, %menuName%, tsk_restart
+    }
+
+	; 必要时加分隔线
+	if (AllowSplit = true)
+	{
+		for Files in OpenList
+		{
+			Menu, scripts_unclose, Add
+			Menu, scripts_restart, Add
+			Break
+		}
+	}
 }
 
