@@ -94,8 +94,11 @@ GuiDropFiles:
 	; 查询所有.md文件，找到资源URL
 	ParseUrlList()
 
+	; 原窗口最小化
+	WinMinimize, %vCanvas%
+
 	; 设置进度条
-	Progress, FS8 FM10 H80 W300,, 正在下载资源,, Courier New
+	Progress, A M1 FS8 FM10 H80 W300,, 正在下载资源,, Courier New
 
 	; 统计资源数量
 	ResCount := 0
@@ -149,6 +152,7 @@ GuiDropFiles:
 	FileDelete, *.md
 
 	Progress, Off
+	WinRestore, %vCanvas%
 
 	SetWorkingDir %A_ScriptDir%
 	MsgBox, 全部md文件已经汇总完成

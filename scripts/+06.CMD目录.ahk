@@ -31,17 +31,44 @@ IfWinActive, ahk_class CabinetWClass
 
 SplitPath, TargetDir,,,,, OutDrive
 
-Run, cmd.exe,, Max, pid
+; 优先启动Cmder，若未安装Cmder则启动cmd
+try {
+	Run, Cmder.exe,, Max, pid
+	Sleep, 1000 ; Cmder比cmd的启动速度慢很多，给它一定时间启动
+}
+catch
+{
+	Run, cmd.exe,, Max, pid
+}
+
 BringWindowToFront(pid)
+
+/*
+Sleep, 100
+WinGet, hWnd, ID, ahk_class ConsoleWindowClass	; hWnd - cmd窗口的窗口句柄
+SetEnglishIME(hWnd)
+*/
 
 SendInput %OutDrive%{Enter}
 SendInput {Raw}cd %TargetDir%
 SendInput {Enter}
-SendInput clear{Enter}	; 3rd/clear.cmd
+SendInput clear{Enter}	; clear.cmd内容如下, 需要将clear.cmd放入PATH中. cls也可以直接用，但顶端一行空行无法清除
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                  clear.cmd                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; @echo off
+; cls %*
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;                   函数                      ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; 为指定窗口设置英文输入法
+; @param hWnd 窗口句柄
+SetEnglishIME(hWnd) {
+	DllCall("SendMessage", "UInt", hWnd, "UInt", "80", "UInt", "1", "UInt", (DllCall("LoadKeyboardLayout", "Str", "04090409", "UInt", "257")))
+}
 
 ; 让指定进程的窗口置顶
 BringWindowToFront(pid)
