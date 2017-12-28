@@ -1,7 +1,8 @@
 ﻿;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 在 CmdMarkdown 中一键插入<center>标签，使图像居中显示
 ; 
-; 快捷键: F9
+; 快捷键: F9  使整行内容居中
+; 快捷键: F10 为整行添加下划线
 ;
 ; gaochao.morgen@gmail.com
 ; 2016/12/14
@@ -29,6 +30,27 @@ F9::
 	Send {Esc}
 	Send {RShift}{$}
 	SendInput {Raw}a</center>
+	Send {Enter 1}
+
+	; 恢复之前的输入法
+	SetIME(CurrentIME, hWnd)
+Return 
+
+#IfWinActive ahk_class Chrome_WidgetWin_0
+F10::
+	; hWnd - CmdMarkdown的窗口句柄
+	WinGet, hWnd, ID, ahk_class Chrome_WidgetWin_0
+	CurrentIME := GetCurrentIME(hWnd)
+	SetEnglishIME(hWnd)
+
+	; 为当前行加入下划线标签对<span style="border-bottom:1px solid black;"></span>
+	Send {Esc}
+	Send {RShift}{^}
+	Send {}
+	SendInput {Raw}i<span style="border-bottom:1px solid black;">
+	Send {Esc}
+	Send {RShift}{$}
+	SendInput {Raw}a</span>
 	Send {Enter 1}
 
 	; 恢复之前的输入法

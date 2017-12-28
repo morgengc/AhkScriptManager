@@ -21,7 +21,7 @@
 ; Ctrl + L
 #IfWinActive ahk_class Chrome_WidgetWin_0
 ^l::
-	Clipboard := "%s/([^A-z0-9 -@.:<>!\/\[\]()|'`，。！、；：“‘（）])([A-Za-z0-9%])/$1 $2/g"
+	Clipboard := "%s/([^A-z0-9 -@.:<>!\/\[\](){}|'`，。！、；：“‘（）])([A-Za-z0-9%``])/$1 $2/g"
 	Send ^v
 	Clipboard := 
 Return
@@ -29,7 +29,7 @@ Return
 ; Ctrl + R
 #IfWinActive ahk_class Chrome_WidgetWin_0
 ^r::
-	Clipboard := "%s/([A-Za-z0-9%])([^A-z0-9 -@.:<>!\/\[\]()|'`，。！、；：“‘（）])/$1 $2/g"
+	Clipboard := "%s/([A-Za-z0-9%``])([^A-z0-9 -@.:<>!\/\[\](){}|'`，。！、；：“‘（）])/$1 $2/g"
 	Send ^v
 	Clipboard := 
 Return
