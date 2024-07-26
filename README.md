@@ -16,7 +16,7 @@ AhkScriptManager 仅接管 `scripts` 目录中的脚本，对已运行的其他�
 
 本软件在 XP/Server2003/Win7/Win10 上稳定运行，Win11 下大部分功能都没有啥问题。
 
-**注意**：Win7系统对程序权限控制较为严格，某些指令执行时需要管理员权限，比如 `+03.Oracle服务.ahk` 里使用了 `cmd /c net start` 命令，如果没有以管理员权限运行，程序将不会正确执行。建议将 `AhkScriptManager.exe` 设置为以管理员权限运行（程序上点击右键，选择属性，选择兼容性，勾选以管理员身份运行此程序），这样可以保证 `scripts` 目录里的脚本均以管理员权限运行。Win10系统没有严格测试，但如果能将所有 `AutoHotkey*.exe` 和 `AhkScriptManager.exe` 设置为 Win7 兼容模式，则大部分脚本运行仍然正常。
+**注意**：Win7系统对程序权限控制较为严格，某些指令执行时需要管理员权限，比如 `+03.Oracle服务.ahk` 里使用了 `cmd /c net start` 命令，如果没有以管理员权限运行，程序将不会正确执行。建议将 `AhkScriptManager.exe` 设置为以管理员权限运行（程序上点击右键，选择属性，选择兼容性，勾选以管理员身份运行此程序），这样可以保证 `scripts` 目录里的脚本均以管理员权限运行。
 
 ## 安装说明
 
@@ -66,11 +66,4 @@ AhkScriptManager 仅接管 `scripts` 目录中的脚本，对已运行的其他�
 | 操作系统 | Windows XP SP3/Windows Server 2003/Windows7 |
 | ahk脚本编码 | UTF-8+BOM |
 
-
-## 其他说明
-~~项目最初托管在Google Code上，地址为: https://code.google.com/p/autohotkey-script-manager/ 。~~
-
-项目目前托管地址：https://github.com/morgengc/AhkScriptManager
-
-在 Autohotkey 中文论坛上单独成贴，地址为: http://ahk8.com/thread-5250.html
 
